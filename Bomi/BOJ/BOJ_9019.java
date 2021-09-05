@@ -7,14 +7,12 @@ import java.util.Queue;
 
 public class BOJ_9019 {
 	static class Number{
-		StringBuilder numString = new StringBuilder();
-		StringBuilder track = new StringBuilder();
+		int num;
+		String track;
 		
 		Number(int num, String s){
-			String snum = String.format("%04d", num);
-			numString.append(snum);
-			
-			track.append(s);
+			this.num = num;
+			this.track=s;
 		}
 	}
 
@@ -28,38 +26,49 @@ public class BOJ_9019 {
 			int A = Integer.parseInt(s[0]);
 			int B = Integer.parseInt(s[1]);
 			
+			boolean isVisited[] = new boolean[10000];
 			Queue<Number> que = new LinkedList<>();
+			isVisited[A] = true;
 			que.add(new Number(A,""));
-			String answer;
+			
 			while(true) {
 				Number thisNumber = que.poll();
-				int num = Integer.parseInt(thisNumber.numString.toString());
-				String line = thisNumber.track.toString();
+				int num = thisNumber.num;
+				String line = thisNumber.track;
 				if(num == B) {
-					answer = thisNumber.track.toString();
+					bw.write(thisNumber.track+"\n");
 					break;
 				}
 				
 				//D
-				que.add(new Number((num*2)%10000,line+"D"));
+				int dnum = (num*2)%10000;
+				if(!isVisited[dnum]) {
+					isVisited[dnum] = true;
+					que.add(new Number(dnum,line+"D"));
+				}
 				
 				//S
-				if(num==0)
-					que.add(new Number(9999,line+"S"));
-				else
-					que.add(new Number(num-1,line+"S"));
+				int snum = num==0 ? 9999 : num-1;
+				if(!isVisited[snum]) {
+					isVisited[snum] = true;
+					que.add(new Number(snum,line+"S"));
+				}
 				
 				//L
-				String sn = thisNumber.numString.substring(1,4)+thisNumber.numString.substring(0,1);
-				que.add(new Number(Integer.parseInt(sn),line+"L"));
+				int lnum = num%1000*10+num/1000;
+				if(!isVisited[lnum]) {
+					isVisited[lnum] = true;
+					que.add(new Number(lnum,line+"L"));
+				}
 				
 				//R
-				String snx = thisNumber.numString.substring(0,3)+thisNumber.numString.substring(3,4);
-				que.add(new Number(Integer.parseInt(snx),line+"R"));
+				int rnum = num%10*1000+num/10;
+				if(!isVisited[rnum]) {
+					isVisited[rnum] = true;
+					que.add(new Number(rnum,line+"R"));
+				}
 			}
-			
-			bw.write(answer+"\n");
-			
+						
 		}
 		
 		br.close();
