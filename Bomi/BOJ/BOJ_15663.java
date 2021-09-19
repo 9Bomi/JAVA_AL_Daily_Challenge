@@ -1,14 +1,14 @@
 import java.io.*;
 import java.util.*;
 
-public class BOJ_15664 {
+public class BOJ_15663 {
 	static int n;
 	static int m;
 	static int nums[];
 	static Set<String> set = new HashSet<>();
 	static boolean visited[];
 	
-	public static void dfs(int cnt,int count,int before, String s) {
+	public static void dfs(int cnt,int count,String s) {
 		if(cnt == n) {
 			if(count == m) {
 				if(!set.contains(s)) {
@@ -20,13 +20,13 @@ public class BOJ_15664 {
 		}
 		
 		for(int i=0;i<n;i++) 
-			if(!visited[i] && nums[i]>=before) {
+			if(!visited[i]) {
 				visited[i] = true;
-				dfs(cnt+1,count+1,nums[i],s+nums[i]+" ");
+				dfs(cnt+1,count+1,s+nums[i]+" ");
 				visited[i] = false;
 			}
 		
-		dfs(cnt+1,count,before,s);
+		dfs(cnt+1,count,s);
 		
 	}
 
@@ -43,7 +43,7 @@ public class BOJ_15664 {
 		
 		Arrays.sort(nums);
 		
-		dfs(0,0,0,"");
+		dfs(0,0,"");
 	}
 
 }
