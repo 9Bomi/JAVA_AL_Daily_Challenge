@@ -1,0 +1,2 @@
+# 최대값 구하기
+SELECT MAX(DATETIME) "시간" FROM ANIMAL_INS;
