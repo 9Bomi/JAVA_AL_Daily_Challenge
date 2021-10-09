@@ -2,9 +2,9 @@ import java.util.*;
 
 class Solution {
     
-    static class Music implements Comparable<Music>{
-        int id;
-        int count;
+    static class Music implements Comparable<Music>{//노래 객체.
+        int id; //인덱스 번호    
+        int count;  //재생 횟수
         
         Music(int id, int count){
             this.id = id;
@@ -33,10 +33,19 @@ class Solution {
                 genreCount.put(genres[i],plays[i]);
                 genrePlayList.put(genres[i],new PriorityQueue<>());
             }
-            genrePlayList.get(genres[i]).add(new Music(i,plays[i]));
+            genrePlayList.get(genres[i]).add(new Music(i,plays[i]));//노래 추가
         }
         
-        for(String g : genreCount.keySet()){
+        PriorityQueue<String> genrePq = new PriorityQueue<>((g1,g2)->{
+            return Integer.compare(genreCount.get(g2),genreCount.get(g1));
+        });
+        
+        for(String g: genreCount.keySet())
+            genrePq.add(g);
+        
+        int pqSize = genrePq.size();
+        for(int i=0;i<pqSize;i++) {
+        	String g = genrePq.poll();
             PriorityQueue<Music> pq = genrePlayList.get(g);
             answer.add(pq.poll().id);
             if(pq.size()>=1)
